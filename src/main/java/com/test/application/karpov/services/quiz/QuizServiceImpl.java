@@ -1,8 +1,7 @@
 package com.test.application.karpov.services.quiz;
 
-import com.test.application.karpov.dto.Quiz;
-import com.test.application.karpov.dto.User;
 import com.test.application.karpov.exceptions.QuizNotFoundException;
+import com.test.application.karpov.services.dto.Quiz;
 import com.test.application.karpov.repositories.quiz.QuizRepository;
 import com.test.application.karpov.repositories.user.UserRepository;
 import lombok.Getter;
@@ -11,11 +10,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -41,29 +39,32 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    @Transactional
-    public Quiz getQuizById(Long id) {
-        checkId(id);
-        return quizRepository.getById(id);
+    public Quiz findQuizById(Long id) {
+        return quizRepository.findById(id)
+                .orElseThrow(() -> new QuizNotFoundException(id));
+    }
+
+
+    @Override
+    public Quiz update(Quiz newQuiz, Long id) {
+        return quizRepository.findById(id)
+                .map(quiz -> {
+                    quiz.setName(newQuiz.getName());
+                    quiz.setDescription(newQuiz.getDescription());
+                    quiz.setQuestions(newQuiz.getQuestions());
+                    quiz.setStopDate(newQuiz.getStopDate());
+                    quiz.setUsers(newQuiz.getUsers());
+                    return save(quiz);
+                })
+                .orElseGet(() -> {
+                    newQuiz.setId(id);
+                    return save(newQuiz);
+                });
     }
 
     @Override
-    public void saveOrUpdate(Quiz quiz) {
-        quizRepository.save(quiz);
-    }
-
-    @Override
-    public void saveOrUpdate(Quiz quiz, Boolean isAnonymous) {
-//        TODO some logic to check quiz
-        if(isAnonymous) {
-            quiz.getUsers().add(getAnonymousUser());
-        }
-        quizRepository.save(quiz);
-    }
-
-    private User getAnonymousUser() {
-        //TODO getting User from DB with id from application properties
-        return userRepository.getById(ANONYMOUS_USER_ID);
+    public Quiz save(Quiz newQuiz) {
+        return quizRepository.save(newQuiz);
     }
 
 
@@ -77,15 +78,7 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public void delete(Long id) {
-        quizRepository.delete(quizRepository.getById(id));
+        quizRepository.deleteById(id);
     }
-
-    private void checkId(Long id) {
-        if (Objects.isNull(id)) {
-            logger.info("Question ID should not be null");
-            throw new QuizNotFoundException(id);
-        }
-
-    }
-
 }
+

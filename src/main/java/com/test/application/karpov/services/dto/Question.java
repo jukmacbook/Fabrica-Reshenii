@@ -1,6 +1,7 @@
-package com.test.application.karpov.dto;
+package com.test.application.karpov.services.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,13 +27,15 @@ public class Question {
     @Enumerated(value = EnumType.STRING)
     private QuestionType questionType;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "quizID", nullable = false)
+    @ToString.Exclude
+    @JsonBackReference
     private Quiz quiz;
 
-    @OneToMany
-    @JoinTable(name = "answer",
-            joinColumns = @JoinColumn(name = "answerID"))
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JsonManagedReference
     private Set<Answer> answers;
 
 }

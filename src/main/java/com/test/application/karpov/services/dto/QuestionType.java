@@ -1,4 +1,4 @@
-package com.test.application.karpov.dto;
+package com.test.application.karpov.services.dto;
 
 public enum QuestionType {
     INPUT,

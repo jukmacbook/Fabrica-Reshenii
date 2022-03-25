@@ -1,8 +1,7 @@
 package com.test.application.karpov.controllers.admin;
 
-import com.test.application.karpov.dto.Quiz;
+import com.test.application.karpov.services.dto.Quiz;
 import com.test.application.karpov.services.quiz.QuizService;
-import com.test.application.karpov.services.quiz.QuizServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +9,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/quiz")
+@RequestMapping("/admin/quizzes")
 public class QuizApiController {
 
     private final QuizService quizService;
@@ -20,29 +19,29 @@ public class QuizApiController {
         this.quizService = quizService;
     }
 
-    @GetMapping(value = "/")
-    public List<Quiz> findAllQuestions(){
+    @GetMapping
+    public List<Quiz> all(){
         return quizService.findAll();
     }
 
     @GetMapping(value = "/{id}")
-    public Quiz getQuizById(@PathVariable Long id) {
-        return quizService.getQuizById(id);
+    public Quiz one(@PathVariable Long id) {
+        return quizService.findQuizById(id);
     }
 
     @PostMapping
-    public void saveQuiz(@RequestBody Quiz quiz){
-        quizService.saveOrUpdate(quiz);
+    public Quiz save(@RequestBody Quiz quiz){
+        return quizService.save(quiz);
     }
 
 
     @PutMapping(value = "/{id}")
-    public void updateQuiz(@PathVariable Long id, @RequestBody Quiz quiz){
-        quizService.saveOrUpdate(quiz);
+    public Quiz replace(@PathVariable Long id, @RequestBody Quiz quiz){
+        return quizService.update(quiz, id);
     }
 
     @DeleteMapping(value = "/{id}", produces = "application/json")
-    public void deleteQuiz(@PathVariable Long id){
+    public void delete(@PathVariable Long id){
         quizService.delete(id);
     }
 }

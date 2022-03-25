@@ -1,23 +1,22 @@
 package com.test.application.karpov.services.quiz;
 
-import com.test.application.karpov.dto.Question;
-import com.test.application.karpov.dto.Quiz;
-import org.springframework.http.ResponseEntity;
+import com.test.application.karpov.services.dto.Quiz;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface QuizService {
 
     List<Quiz> findAll();
 
-    void saveOrUpdate(Quiz quiz, Boolean isAnonymous);
-
     List<Quiz> findAllActive();
 
-    Quiz getQuizById(Long id);
+    Quiz findQuizById(Long id);
 
-    void saveOrUpdate(Quiz quiz);
+    Quiz update(Quiz newQuiz, Long id);
+
+    Quiz save(Quiz newQuiz);
 
     void delete(Long id);
 

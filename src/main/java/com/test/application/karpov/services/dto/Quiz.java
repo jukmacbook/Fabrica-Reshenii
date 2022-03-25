@@ -1,7 +1,6 @@
-package com.test.application.karpov.dto;
+package com.test.application.karpov.services.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -33,18 +32,17 @@ public class Quiz {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @ToString.Exclude
     @JoinTable(name = "users_quizzes",
             joinColumns = @JoinColumn(name = "userID"),
             inverseJoinColumns = @JoinColumn(name = "quizID"))
-    @JsonIgnore
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonManagedReference
     private Set<User> users;
 
-    @OneToMany(mappedBy = "quiz", fetch = FetchType.EAGER)
-    @JsonIgnore
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    // TODO Написать про ДТО
+    @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JsonManagedReference
     private Set<Question> questions;
 
 }

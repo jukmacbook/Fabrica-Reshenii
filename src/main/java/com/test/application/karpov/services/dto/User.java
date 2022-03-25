@@ -1,6 +1,6 @@
-package com.test.application.karpov.dto;
+package com.test.application.karpov.services.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -28,5 +28,6 @@ public class User {
             joinColumns = @JoinColumn(name = "userID"),
             inverseJoinColumns = @JoinColumn(name = "quizID"))
     @ToString.Exclude
+    @JsonManagedReference
     private Set<Quiz> quizzes;
 }

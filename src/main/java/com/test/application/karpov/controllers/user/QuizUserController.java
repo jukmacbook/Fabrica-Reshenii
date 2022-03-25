@@ -1,7 +1,7 @@
 package com.test.application.karpov.controllers.user;
 
 
-import com.test.application.karpov.dto.Quiz;
+import com.test.application.karpov.services.dto.Quiz;
 import com.test.application.karpov.services.quiz.QuizServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/user/quiz")
+@RequestMapping("/user/quizzes")
 public class QuizUserController {
 
     private final QuizServiceImpl quizService;
@@ -25,10 +25,10 @@ public class QuizUserController {
         return quizService.findAllActive();
     }
 
-    @PostMapping(value = "/{isAnonymous}")
-    public void saveQuiz(@RequestBody Quiz quiz, @PathVariable Boolean isAnonymous) {
-        quizService.saveOrUpdate(quiz, isAnonymous);
-    }
+//    @PostMapping(value = "/{isAnonymous}")
+//    public void saveQuiz(@RequestBody Quiz quiz, @PathVariable Boolean isAnonymous) {
+//        quizService.saveOrUpdate(quiz, isAnonymous);
+//    }
 
 }
 

@@ -1,7 +1,7 @@
 package com.test.application.karpov.services.question;
 
-import com.test.application.karpov.dto.Question;
 import com.test.application.karpov.exceptions.QuestionNotFoundException;
+import com.test.application.karpov.services.dto.Question;
 import com.test.application.karpov.repositories.question.QuestionRepository;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,13 +9,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-
-import static java.util.Optional.ofNullable;
 
 
 @Getter
@@ -37,16 +33,30 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    @Transactional
-    public Question getQuestionById(Long id) {
-        checkId(id);
-        return questionRepository.getById(id);
+    public Question findQuestionById(Long id) {
+        return questionRepository.findById(id)
+                .orElseThrow(() -> new QuestionNotFoundException(id));
     }
 
     @Override
-    public void saveOrUpdate(Question question) {
-//        TODO some logic to check quiz
-        questionRepository.save(question);
+    public Question save(Question newQuestion) {
+        return questionRepository.save(newQuestion);
+    }
+
+    @Override
+    public Question update(Question newQuestion, Long id) {
+        return questionRepository.findById(id)
+                .map(question -> {
+                    question.setQuiz(newQuestion.getQuiz());
+                    question.setAnswers(newQuestion.getAnswers());
+                    question.setQuestionType(newQuestion.getQuestionType());
+                    question.setQuestionText(newQuestion.getQuestionText());
+                    return save(question);
+                })
+                .orElseGet(() -> {
+                    newQuestion.setId(id);
+                    return save(newQuestion);
+                });
     }
 
     @Override
@@ -54,13 +64,6 @@ public class QuestionServiceImpl implements QuestionService {
         questionRepository.delete(questionRepository.getById(id));
     }
 
-    private void checkId(Long id) {
-        if (Objects.isNull(id)) {
-            logger.info("Question ID should not be null");
-            throw new QuestionNotFoundException(id);
-        }
-
-    }
 
 
 }

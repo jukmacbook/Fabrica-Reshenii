@@ -1,17 +1,20 @@
 package com.test.application.karpov.services.question;
 
-import com.test.application.karpov.dto.Question;
+import com.test.application.karpov.services.dto.Question;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface QuestionService {
 
     List<Question> findAll();
 
-    Question getQuestionById(Long id);
+    Question findQuestionById(Long id);
 
-    void saveOrUpdate(Question question);
+    Question save(Question newQuestion);
+
+    Question update(Question newQuestion, Long id);
 
     void delete(Long id);
 
