@@ -130,11 +130,11 @@
 }
 ```
 
-#### DELETE /admin/polls/(pollId)/questions/(questionId)
+#### DELETE /admin/quizzes/(quizId)/questions/(questionId)
 
 Удаление вопроса из опроса.
 
-#### PUT /admin/polls/(pollId)/questions/(questionId)
+#### PUT /admin/quizzes/(quizId)/questions/(questionId)
 
 Изменение существующего вопроса. Тело запроса:
 ```
