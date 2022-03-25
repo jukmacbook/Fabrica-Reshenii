@@ -45,7 +45,6 @@ public class QuizServiceImpl implements QuizService {
                     quiz.setDescription(newQuiz.getDescription());
                     quiz.setQuestions(newQuiz.getQuestions());
                     quiz.setStopDate(newQuiz.getStopDate());
-                    quiz.setUsers(newQuiz.getUsers());
                     return save(quiz);
                 })
                 .orElseGet(() -> {
@@ -62,7 +61,6 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public List<Quiz> findAllActive() {
-        //TODO make select from DB to be faster
         return findAll().stream()
                 .filter(q -> q.getStopDate().after(new Date()) && q.getStartDate().before(new Date()))
                 .collect(Collectors.toList());

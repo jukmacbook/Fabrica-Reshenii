@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping
-    public CollectionModel<EntityModel<User>> all(){
+    public CollectionModel<EntityModel<User>> all() {
         List<EntityModel<User>> questions = userService.findAll().stream()
                 .map(userAssembler::toModel)
                 .collect(Collectors.toList());
@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-    public CollectionModel<EntityModel<Quiz>> allQuizzesByUserID(@PathVariable Long id){
+    public CollectionModel<EntityModel<Quiz>> allQuizzesByUserID(@PathVariable Long id) {
         List<EntityModel<Quiz>> questions = userService.findUserById(id).getQuizzes().stream()
                 .map(quizAssembler::toModel)
                 .collect(Collectors.toList());
@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody User newUser){
+    public ResponseEntity<?> save(@RequestBody User newUser) {
         EntityModel<User> entityModel = userAssembler.toModel(userService.save(newUser));
 
         return ResponseEntity
@@ -63,7 +63,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{user_id}")
-    public ResponseEntity<?> delete(@PathVariable Long user_id){
+    public ResponseEntity<?> delete(@PathVariable Long user_id) {
         userService.delete(user_id);
 
         return ResponseEntity.noContent().build();

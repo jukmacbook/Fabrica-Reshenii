@@ -31,7 +31,7 @@ public class QuizApiController {
     }
 
     @GetMapping
-    public CollectionModel<EntityModel<Quiz>> all(){
+    public CollectionModel<EntityModel<Quiz>> all() {
         List<EntityModel<Quiz>> questions = quizService.findAll().stream()
                 .map(quizAssembler::toModel)
                 .collect(Collectors.toList());
@@ -44,13 +44,13 @@ public class QuizApiController {
 
     @GetMapping(value = "/{id}")
     public EntityModel<Quiz> one(@PathVariable Long id) {
-            Quiz quiz = quizService.findQuizById(id);
+        Quiz quiz = quizService.findQuizById(id);
 
-            return quizAssembler.toModel(quiz);
+        return quizAssembler.toModel(quiz);
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Quiz quiz){
+    public ResponseEntity<?> save(@RequestBody Quiz quiz) {
         EntityModel<Quiz> entityModel = quizAssembler.toModel(quizService.save(quiz));
 
         return ResponseEntity
@@ -59,7 +59,7 @@ public class QuizApiController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> replace(@PathVariable Long id, @RequestBody Quiz quiz){
+    public ResponseEntity<?> replace(@PathVariable Long id, @RequestBody Quiz quiz) {
         EntityModel<Quiz> entityModel = quizAssembler.toModel(quizService.update(quiz, id));
 
         return ResponseEntity
@@ -68,7 +68,7 @@ public class QuizApiController {
     }
 
     @DeleteMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<?> delete(@PathVariable Long id){
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         quizService.delete(id);
 
         return ResponseEntity.noContent().build();

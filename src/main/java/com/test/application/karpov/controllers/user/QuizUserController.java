@@ -38,7 +38,7 @@ public class QuizUserController {
     }
 
     @GetMapping(produces = "application/json")
-    public CollectionModel<EntityModel<Quiz>> findAllActive(@PathVariable String user_id){
+    public CollectionModel<EntityModel<Quiz>> findAllActive(@PathVariable String user_id) {
         List<EntityModel<Quiz>> questions = quizService.findAllActive().stream()
                 .map(quizAssembler::toModel)
                 .collect(Collectors.toList());
@@ -48,8 +48,8 @@ public class QuizUserController {
     }
 
     @PostMapping(value = "/{quizId}{isAnonymous}", produces = "application/json")
-    public EntityModel<User> addQuiz(@PathVariable Long quizId, @PathVariable Boolean isAnonymous, @PathVariable Long user_id){
-        if(isAnonymous){
+    public EntityModel<User> addQuiz(@PathVariable Long quizId, @PathVariable Boolean isAnonymous, @PathVariable Long user_id) {
+        if (isAnonymous) {
             User user = userService.getAnonymousUser();
             userService.addQuiz(user.getId(), quizService.findQuizById(quizId));
 

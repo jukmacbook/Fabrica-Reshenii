@@ -1,5 +1,7 @@
 package com.test.application.karpov.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,14 +34,6 @@ public class Quiz {
 
     @Column(name = "description", nullable = false)
     private String description;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @ToString.Exclude
-    @JoinTable(name = "users_quizzes",
-            joinColumns = @JoinColumn(name = "userID"),
-            inverseJoinColumns = @JoinColumn(name = "quizID"))
-    @JsonManagedReference
-    private List<User> users;
 
     @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
     @ToString.Exclude

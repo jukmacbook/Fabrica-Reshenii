@@ -10,10 +10,9 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final long ANONYMOUS_USER_ID = 1;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -67,7 +66,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<Quiz> addQuiz(Long id, Quiz quiz) {
         List<Quiz> quizzes = findUserById(id).getQuizzes();
-        if(Objects.isNull(quizzes)){
+        if (Objects.isNull(quizzes)) {
             quizzes = new ArrayList<>();
         }
         quizzes.add(quiz);

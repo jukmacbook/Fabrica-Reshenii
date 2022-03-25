@@ -30,7 +30,7 @@ public class QuestionApiController {
     }
 
     @GetMapping(produces = "application/json")
-    public CollectionModel<EntityModel<Question>> all(){
+    public CollectionModel<EntityModel<Question>> all() {
         List<EntityModel<Question>> questions = questionService.findAll().stream()
                 .map(questionAssembler::toModel)
                 .collect(Collectors.toList());
@@ -49,7 +49,7 @@ public class QuestionApiController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Question question){
+    public ResponseEntity<?> save(@RequestBody Question question) {
         EntityModel<Question> entityModel = questionAssembler.toModel(questionService.save(question));
 
         return ResponseEntity
@@ -58,7 +58,7 @@ public class QuestionApiController {
     }
 
     @PutMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<?> replace(@PathVariable Long id, @RequestBody Question question){
+    public ResponseEntity<?> replace(@PathVariable Long id, @RequestBody Question question) {
         EntityModel<Question> entityModel = questionAssembler.toModel(questionService.update(question, id));
 
         return ResponseEntity
@@ -67,7 +67,7 @@ public class QuestionApiController {
     }
 
     @DeleteMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<?> delete(@PathVariable Long id){
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         questionService.delete(id);
 
         return ResponseEntity.noContent().build();
