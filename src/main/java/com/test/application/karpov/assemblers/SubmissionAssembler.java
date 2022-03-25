@@ -5,6 +5,7 @@ import com.test.application.karpov.dto.Submission;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
+import
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -13,6 +14,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class SubmissionAssembler implements RepresentationModelAssembler<Submission, EntityModel<Submission>> {
     @Override
     public EntityModel<Submission> toModel(Submission submission) {
-        return EntityModel.of(submission);
+        return EntityModel.of(submission,
+                linkTo(methodOn(UserController.class).allSubmissionsByUserID(submission.getUser().getId())).withSelfRel());
     }
 }
