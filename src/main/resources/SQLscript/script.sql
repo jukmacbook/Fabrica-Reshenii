@@ -1,7 +1,8 @@
-INSERT INTO `quiz`.`users` (`userid`, `name`) VALUES ('1', 'John');
+INSERT INTO `quiz`.`users` (`userid`, `name`) VALUES ('1', 'Anonymous');
 INSERT INTO `quiz`.`users` (`userid`, `name`) VALUES ('2', 'Mike');
 INSERT INTO `quiz`.`users` (`userid`, `name`) VALUES ('3', 'Andrew');
 INSERT INTO `quiz`.`users` (`userid`, `name`) VALUES ('4', 'Paul');
+INSERT INTO `quiz`.`users` (`userid`, `name`) VALUES ('5', 'John');
 
 
 INSERT INTO `quiz`.`quizzes` (`quizid`, `description`, `name`, `start_date`, `stop_date`) VALUES ('1', 'Job', 'Job', '23.03.2022', '23.04.2022');

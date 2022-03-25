@@ -36,7 +36,9 @@ public class QuestionApiController {
                 .collect(Collectors.toList());
 
         return CollectionModel.of(questions,
-                linkTo(methodOn(QuestionApiController.class).all()).withSelfRel());
+                linkTo(methodOn(QuestionApiController.class)
+                        .all())
+                        .withSelfRel());
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")

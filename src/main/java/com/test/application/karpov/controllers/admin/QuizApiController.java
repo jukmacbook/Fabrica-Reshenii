@@ -37,7 +37,9 @@ public class QuizApiController {
                 .collect(Collectors.toList());
 
         return CollectionModel.of(questions,
-                linkTo(methodOn(QuizApiController.class).all()).withSelfRel());
+                linkTo(methodOn(QuizApiController.class)
+                        .all())
+                        .withSelfRel());
     }
 
     @GetMapping(value = "/{id}")

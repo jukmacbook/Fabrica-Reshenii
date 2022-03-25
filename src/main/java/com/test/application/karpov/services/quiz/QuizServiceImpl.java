@@ -3,11 +3,8 @@ package com.test.application.karpov.services.quiz;
 import com.test.application.karpov.exceptions.quiz.QuizNotFoundException;
 import com.test.application.karpov.dto.Quiz;
 import com.test.application.karpov.repositories.quiz.QuizRepository;
-import com.test.application.karpov.repositories.user.UserRepository;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +17,12 @@ import java.util.stream.Collectors;
 @Setter
 @Service
 public class QuizServiceImpl implements QuizService {
-    private static final long ANONYMOUS_USER_ID = 1;
 
-    private static final Logger logger = LogManager.getLogger(QuizServiceImpl.class);
     private QuizRepository quizRepository;
-    private UserRepository userRepository;
 
     @Autowired
-    public QuizServiceImpl(QuizRepository quizRepository, UserRepository userRepository) {
+    public QuizServiceImpl(QuizRepository quizRepository) {
         this.quizRepository = quizRepository;
-        this.userRepository = userRepository;
     }
 
     @Override

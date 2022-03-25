@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -38,11 +39,10 @@ public class Quiz {
             joinColumns = @JoinColumn(name = "userID"),
             inverseJoinColumns = @JoinColumn(name = "quizID"))
     @JsonManagedReference
-    private Set<User> users;
+    private List<User> users;
 
     @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
     @ToString.Exclude
     @JsonManagedReference
     private Set<Question> questions;
-
 }

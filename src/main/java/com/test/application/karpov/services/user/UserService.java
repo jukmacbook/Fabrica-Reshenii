@@ -4,7 +4,6 @@ import com.test.application.karpov.dto.Quiz;
 import com.test.application.karpov.dto.User;
 
 import java.util.List;
-import java.util.Set;
 
 public interface UserService {
 
@@ -12,11 +11,13 @@ public interface UserService {
 
     User findUserById(Long id);
 
-    User save(User newUser, Boolean isAnonymous);
+    User save(User newUser);
+
+    User getAnonymousUser();
 
     User update(User newUser, Long id);
 
-    Set<Quiz> addQuiz(Long id, Quiz quiz);
+    List<Quiz> addQuiz(Long id, Quiz quiz);
 
     void delete(Long id);
 }

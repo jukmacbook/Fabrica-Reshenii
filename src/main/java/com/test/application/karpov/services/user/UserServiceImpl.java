@@ -7,15 +7,13 @@ import com.test.application.karpov.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final long ANONYMOUS_USER_ID = 1;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -29,16 +27,21 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User findUserById(Long id) {
+
         return userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Override
-    public User save(User newUser, Boolean isAnonymous) {
-        if(isAnonymous){
-            newUser.setName("Anonymous");
-            return save(newUser, false);
-        }
+    public User getAnonymousUser() {
+        User user = new User();
+        user.setName("Anonymous");
+        return save(user);
+    }
+
+    @Override
+    public User save(User newUser) {
+
         return userRepository.save(newUser);
     }
 
@@ -62,10 +65,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Set<Quiz> addQuiz(Long id, Quiz quiz) {
-        Set<Quiz> quizzes = findUserById(id).getQuizzes();
+    public List<Quiz> addQuiz(Long id, Quiz quiz) {
+        List<Quiz> quizzes = findUserById(id).getQuizzes();
         if(Objects.isNull(quizzes)){
-            quizzes = new HashSet<>();
+            quizzes = new ArrayList<>();
         }
         quizzes.add(quiz);
 

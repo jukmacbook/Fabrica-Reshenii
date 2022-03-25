@@ -13,7 +13,7 @@ public class QuestionNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(QuestionNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String quizNotFoundHandler(QuestionNotFoundException qx){
-        return qx.getMessage();
+    public String quizNotFoundHandler(QuestionNotFoundException ex){
+        return ex.getMessage();
     }
 }

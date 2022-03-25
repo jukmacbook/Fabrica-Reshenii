@@ -47,13 +47,18 @@ public class QuizUserController {
                 linkTo(methodOn(QuizApiController.class).all()).withSelfRel());
     }
 
-    @PostMapping(value = "/{quiz_id}", produces = "application/json")
-    public EntityModel<User> addQuiz(@PathVariable Long quiz_id, @PathVariable Long user_id){
+    @PostMapping(value = "/{quizId}{isAnonymous}", produces = "application/json")
+    public EntityModel<User> addQuiz(@PathVariable Long quizId, @PathVariable Boolean isAnonymous, @PathVariable Long user_id){
+        if(isAnonymous){
+            User user = userService.getAnonymousUser();
+            userService.addQuiz(user.getId(), quizService.findQuizById(quizId));
+
+            return userAssembler.toModel(userService.update(user, user_id));
+        }
+
         User user = userService.findUserById(user_id);
-        userService.addQuiz(user.getId(), quizService.findQuizById(quiz_id));
+        userService.addQuiz(user.getId(), quizService.findQuizById(quizId));
 
         return userAssembler.toModel(userService.update(user, user_id));
     }
 }
-
-

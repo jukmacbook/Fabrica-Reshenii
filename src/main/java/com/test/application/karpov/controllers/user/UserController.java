@@ -1,6 +1,8 @@
 package com.test.application.karpov.controllers.user;
 
+import com.test.application.karpov.assemblers.QuizAssembler;
 import com.test.application.karpov.assemblers.UserAssembler;
+import com.test.application.karpov.dto.Quiz;
 import com.test.application.karpov.dto.User;
 import com.test.application.karpov.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserController {
 
     private final UserService userService;
+    private final QuizAssembler quizAssembler;
     private final UserAssembler userAssembler;
 
     @Autowired
-    public UserController(UserService userService, UserAssembler userAssembler) {
+    public UserController(UserService userService, QuizAssembler quizAssembler, UserAssembler userAssembler) {
         this.userService = userService;
+        this.quizAssembler = quizAssembler;
         this.userAssembler = userAssembler;
     }
 
@@ -40,15 +44,18 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-    public EntityModel<User> one(@PathVariable Long id) {
-        User user = userService.findUserById(id);
+    public CollectionModel<EntityModel<Quiz>> allQuizzesByUserID(@PathVariable Long id){
+        List<EntityModel<Quiz>> questions = userService.findUserById(id).getQuizzes().stream()
+                .map(quizAssembler::toModel)
+                .collect(Collectors.toList());
 
-        return userAssembler.toModel(user);
+        return CollectionModel.of(questions,
+                linkTo(methodOn(UserController.class).all()).withSelfRel());
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody User newUser, @RequestBody Boolean isAnonymous){
-        EntityModel<User> entityModel = userAssembler.toModel(userService.save(newUser, isAnonymous));
+    public ResponseEntity<?> save(@RequestBody User newUser){
+        EntityModel<User> entityModel = userAssembler.toModel(userService.save(newUser));
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())

@@ -13,7 +13,7 @@ public class UserNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String quizNotFoundHandler(UserNotFoundException qx){
-        return qx.getMessage();
+    public String quizNotFoundHandler(UserNotFoundException ex){
+        return ex.getMessage();
     }
 }

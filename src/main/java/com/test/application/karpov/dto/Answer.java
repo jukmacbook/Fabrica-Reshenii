@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class Answer {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answerID", nullable = false)
@@ -24,7 +23,5 @@ public class Answer {
     @JoinColumn(name = "questionID")
     @JsonBackReference
     private Question question;
-
-
 
 }
