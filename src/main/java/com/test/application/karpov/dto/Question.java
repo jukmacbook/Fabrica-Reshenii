@@ -1,13 +1,11 @@
 package com.test.application.karpov.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "questions")
@@ -32,10 +30,5 @@ public class Question {
     @ToString.Exclude
     @JsonBackReference
     private Quiz quiz;
-
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
-    @ToString.Exclude
-    @JsonManagedReference
-    private Set<Answer> answers;
 
 }

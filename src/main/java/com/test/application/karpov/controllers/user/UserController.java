@@ -1,9 +1,13 @@
 package com.test.application.karpov.controllers.user;
 
 import com.test.application.karpov.assemblers.QuizAssembler;
-import com.test.application.karpov.assemblers.UserAssembler;
+import com.test.application.karpov.assemblers.SubmissionAssembler;
+import com.test.application.karpov.controllers.admin.QuizApiController;
+import com.test.application.karpov.dto.Answer;
 import com.test.application.karpov.dto.Quiz;
-import com.test.application.karpov.dto.User;
+import com.test.application.karpov.dto.Submission;
+import com.test.application.karpov.services.quiz.QuizService;
+import com.test.application.karpov.services.submission.SubmissionService;
 import com.test.application.karpov.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -19,53 +23,61 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/users/{userId}/quizzes")
 public class UserController {
 
     private final UserService userService;
+    private final SubmissionAssembler submissionAssembler;
+    private final QuizService quizService;
+    private final SubmissionService submissionService;
     private final QuizAssembler quizAssembler;
-    private final UserAssembler userAssembler;
 
     @Autowired
-    public UserController(UserService userService, QuizAssembler quizAssembler, UserAssembler userAssembler) {
+    public UserController(UserService userService, SubmissionAssembler submissionAssembler, QuizService quizService, SubmissionService submissionService, QuizAssembler quizAssembler) {
         this.userService = userService;
+        this.submissionAssembler = submissionAssembler;
+        this.quizService = quizService;
+        this.submissionService = submissionService;
         this.quizAssembler = quizAssembler;
-        this.userAssembler = userAssembler;
     }
 
-    @GetMapping
-    public CollectionModel<EntityModel<User>> all() {
-        List<EntityModel<User>> questions = userService.findAll().stream()
-                .map(userAssembler::toModel)
+
+    @GetMapping(produces = "application/json")
+    public CollectionModel<EntityModel<Quiz>> findAllActive() {
+        List<EntityModel<Quiz>> quizzes = quizService.findAllActive().stream()
+                .map(EntityModel::of)
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(questions,
-                linkTo(methodOn(UserController.class).all()).withSelfRel());
+        return CollectionModel.of(quizzes,
+                linkTo(methodOn(QuizApiController.class).all()).withSelfRel());
     }
 
-    @GetMapping(value = "/{id}")
-    public CollectionModel<EntityModel<Quiz>> allQuizzesByUserID(@PathVariable Long id) {
-        List<EntityModel<Quiz>> questions = userService.findUserById(id).getQuizzes().stream()
-                .map(quizAssembler::toModel)
+    @GetMapping(value = "/quiz/{id}", produces = "application/json")
+    public EntityModel<Quiz> oneQuiz(@PathVariable Long id) {
+
+        return quizAssembler.toModel(quizService.findQuizById(id));
+    }
+
+    @GetMapping(value = "/quizzesByUserId")
+    public CollectionModel<EntityModel<Submission>> allSubmissionsByUserID(@PathVariable Long userId) {
+        List<EntityModel<Submission>> questions = userService.findUserById(userId).getSubmissions().stream()
+                .map(submissionAssembler::toModel)
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(questions,
-                linkTo(methodOn(UserController.class).all()).withSelfRel());
+        return CollectionModel.of(questions);
     }
 
-    @PostMapping
-    public ResponseEntity<?> save(@RequestBody User newUser) {
-        EntityModel<User> entityModel = userAssembler.toModel(userService.save(newUser));
+    @PostMapping(value = "/{quizId}", produces = "application/json")
+    public ResponseEntity<?> takeQuiz(@PathVariable Long quizId, @RequestBody List<Answer> answers, @PathVariable Long userId) {
+        Submission submission = new Submission();
+        submission.setUser(userService.findUserById(userId));
+        submission.setQuiz(quizService.findQuizById(quizId));
+        submission.setAnswers(answers);
+        submissionService.save(submission);
+        EntityModel<Submission> entityModel = submissionAssembler.toModel(submission);
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
-    }
-
-    @DeleteMapping("/{user_id}")
-    public ResponseEntity<?> delete(@PathVariable Long user_id) {
-        userService.delete(user_id);
-
-        return ResponseEntity.noContent().build();
     }
 }

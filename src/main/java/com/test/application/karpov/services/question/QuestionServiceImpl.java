@@ -47,7 +47,6 @@ public class QuestionServiceImpl implements QuestionService {
         return questionRepository.findById(id)
                 .map(question -> {
                     question.setQuiz(newQuestion.getQuiz());
-                    question.setAnswers(newQuestion.getAnswers());
                     question.setQuestionType(newQuestion.getQuestionType());
                     question.setQuestionText(newQuestion.getQuestionText());
                     return save(question);

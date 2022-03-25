@@ -1,6 +1,7 @@
 package com.test.application.karpov.assemblers;
 
 import com.test.application.karpov.controllers.admin.QuestionApiController;
+import com.test.application.karpov.controllers.admin.QuizApiController;
 import com.test.application.karpov.dto.Quiz;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -14,7 +15,7 @@ public class QuizAssembler implements RepresentationModelAssembler<Quiz, EntityM
     @Override
     public EntityModel<Quiz> toModel(Quiz quiz) {
         return EntityModel.of(quiz,
-                linkTo(methodOn(QuestionApiController.class).one(quiz.getId())).withSelfRel(),
-                linkTo(methodOn(QuestionApiController.class).all()).withRel("questions"));
+                linkTo(methodOn(QuizApiController.class).one(quiz.getId())).withSelfRel(),
+                linkTo(methodOn(QuizApiController.class).all()).withRel("questions"));
     }
 }

@@ -1,5 +1,6 @@
 package com.test.application.karpov.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,20 +19,13 @@ public class User {
     @Column(name = "userID")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
-
-    @ManyToMany
-    @JoinTable(name = "users_quizzes",
-            joinColumns = @JoinColumn(name = "userID"),
-            inverseJoinColumns = @JoinColumn(name = "quizID"))
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonManagedReference
     @ToString.Exclude
-    private List<Quiz> quizzes;
+    private List<Submission> submissions;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_answers",
-            joinColumns = @JoinColumn(name = "userID"),
-            inverseJoinColumns = @JoinColumn(name = "answerID"))
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @ToString.Exclude
+    @JsonManagedReference
     private List<Answer> answers;
 }

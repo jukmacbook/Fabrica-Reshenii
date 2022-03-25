@@ -1,5 +1,6 @@
 package com.test.application.karpov.services.user;
 
+import com.test.application.karpov.dto.Answer;
 import com.test.application.karpov.dto.Quiz;
 import com.test.application.karpov.dto.User;
 
@@ -13,11 +14,11 @@ public interface UserService {
 
     User save(User newUser);
 
-    User getAnonymousUser();
-
     User update(User newUser, Long id);
 
-    List<Quiz> addQuiz(Long id, Quiz quiz);
+    Quiz addQuiz(Long id, Quiz quiz);
+
+    User addAnswers(User user, List<Answer> answers);
 
     void delete(Long id);
 }

@@ -3,6 +3,7 @@ package com.test.application.karpov.controllers.admin;
 import com.test.application.karpov.assemblers.QuestionAssembler;
 import com.test.application.karpov.dto.Question;
 import com.test.application.karpov.services.question.QuestionService;
+import com.test.application.karpov.services.quiz.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -17,27 +18,29 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/admin/questions")
+@RequestMapping("/admin/quizzes/{quizId}/questions")
 public class QuestionApiController {
 
     private final QuestionService questionService;
     private final QuestionAssembler questionAssembler;
+    private final QuizService quizService;
 
     @Autowired
-    public QuestionApiController(QuestionService questionService, QuestionAssembler questionAssembler) {
+    public QuestionApiController(QuestionService questionService, QuestionAssembler questionAssembler, QuizService quizService) {
         this.questionService = questionService;
         this.questionAssembler = questionAssembler;
+        this.quizService = quizService;
     }
 
     @GetMapping(produces = "application/json")
-    public CollectionModel<EntityModel<Question>> all() {
-        List<EntityModel<Question>> questions = questionService.findAll().stream()
+    public CollectionModel<EntityModel<Question>> all(@PathVariable Long quizId) {
+        List<EntityModel<Question>> questions = quizService.findQuizById(quizId).getQuestions().stream()
                 .map(questionAssembler::toModel)
                 .collect(Collectors.toList());
 
         return CollectionModel.of(questions,
                 linkTo(methodOn(QuestionApiController.class)
-                        .all())
+                        .all(quizId))
                         .withSelfRel());
     }
 
@@ -49,8 +52,9 @@ public class QuestionApiController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Question question) {
+    public ResponseEntity<?> save(@RequestBody Question question, @PathVariable Long quizId) {
         EntityModel<Question> entityModel = questionAssembler.toModel(questionService.save(question));
+        quizService.addQuestion(question, quizId);
 
         return ResponseEntity
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())

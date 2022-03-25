@@ -1,5 +1,6 @@
 package com.test.application.karpov.services.quiz;
 
+import com.test.application.karpov.dto.Question;
 import com.test.application.karpov.exceptions.quiz.QuizNotFoundException;
 import com.test.application.karpov.dto.Quiz;
 import com.test.application.karpov.repositories.quiz.QuizRepository;
@@ -8,8 +9,10 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -36,6 +39,15 @@ public class QuizServiceImpl implements QuizService {
                 .orElseThrow(() -> new QuizNotFoundException(id));
     }
 
+    @Override
+    public Question addQuestion(Question question, Long id) {
+        List<Question> questions = findQuizById(id).getQuestions();
+        if(Objects.isNull(questions)){
+            questions = new ArrayList<>();
+        }
+        questions.add(question);
+        return question;
+    }
 
     @Override
     public Quiz update(Quiz newQuiz, Long id) {

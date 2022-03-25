@@ -1,5 +1,6 @@
 package com.test.application.karpov.services.quiz;
 
+import com.test.application.karpov.dto.Question;
 import com.test.application.karpov.dto.Quiz;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public interface QuizService {
     List<Quiz> findAllActive();
 
     Quiz findQuizById(Long id);
+
+    Question addQuestion(Question question, Long id);
 
     Quiz update(Quiz newQuiz, Long id);
 

@@ -1,5 +1,6 @@
 package com.test.application.karpov.services.user;
 
+import com.test.application.karpov.dto.Answer;
 import com.test.application.karpov.exceptions.user.UserNotFoundException;
 import com.test.application.karpov.repositories.user.UserRepository;
 import com.test.application.karpov.dto.Quiz;
@@ -32,13 +33,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getAnonymousUser() {
-        User user = new User();
-        user.setName("Anonymous");
-        return save(user);
-    }
-
-    @Override
     public User save(User newUser) {
 
         return userRepository.save(newUser);
@@ -48,8 +42,8 @@ public class UserServiceImpl implements UserService {
     public User update(User newUser, Long id) {
         return userRepository.findById(id)
                 .map(user -> {
-                    user.setName(newUser.getName());
-                    user.setQuizzes(newUser.getQuizzes());
+                    user.setSubmissions(newUser.getSubmissions());
+                    user.setAnswers(newUser.getAnswers());
                     return userRepository.save(user);
                 })
                 .orElseGet(() -> {
@@ -64,13 +58,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Quiz> addQuiz(Long id, Quiz quiz) {
-        List<Quiz> quizzes = findUserById(id).getQuizzes();
-        if (Objects.isNull(quizzes)) {
-            quizzes = new ArrayList<>();
+    public User addAnswers(User user, List<Answer> answers) {
+        for (Answer answer : answers) {
+            user.getAnswers().add(answer);
         }
-        quizzes.add(quiz);
+        return user;
+    }
 
-        return quizzes;
+    @Override
+    public Quiz addQuiz(Long id, Quiz quiz) {
+        return null;
     }
 }

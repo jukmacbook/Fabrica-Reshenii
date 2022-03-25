@@ -38,5 +38,6 @@ public class Quiz {
     @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
     @ToString.Exclude
     @JsonManagedReference
-    private Set<Question> questions;
+    private List<Question> questions;
+
 }

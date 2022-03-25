@@ -14,7 +14,6 @@ public class QuestionAssembler implements RepresentationModelAssembler<Question,
     @Override
     public EntityModel<Question> toModel(Question question) {
         return EntityModel.of(question,
-                linkTo(methodOn(QuestionApiController.class).one(question.getId())).withSelfRel(),
-                linkTo(methodOn(QuestionApiController.class).all()).withRel("questions"));
+                linkTo(methodOn(QuestionApiController.class).one(question.getId())).withSelfRel());
     }
 }
