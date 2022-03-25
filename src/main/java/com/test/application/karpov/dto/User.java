@@ -1,4 +1,4 @@
-package com.test.application.karpov.services.dto;
+package com.test.application.karpov.dto;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;

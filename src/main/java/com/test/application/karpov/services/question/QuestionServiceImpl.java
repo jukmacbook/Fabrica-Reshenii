@@ -1,7 +1,7 @@
 package com.test.application.karpov.services.question;
 
-import com.test.application.karpov.exceptions.QuestionNotFoundException;
-import com.test.application.karpov.services.dto.Question;
+import com.test.application.karpov.exceptions.question.QuestionNotFoundException;
+import com.test.application.karpov.dto.Question;
 import com.test.application.karpov.repositories.question.QuestionRepository;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Getter

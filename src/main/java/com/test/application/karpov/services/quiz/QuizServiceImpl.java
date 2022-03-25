@@ -1,7 +1,7 @@
 package com.test.application.karpov.services.quiz;
 
-import com.test.application.karpov.exceptions.QuizNotFoundException;
-import com.test.application.karpov.services.dto.Quiz;
+import com.test.application.karpov.exceptions.quiz.QuizNotFoundException;
+import com.test.application.karpov.dto.Quiz;
 import com.test.application.karpov.repositories.quiz.QuizRepository;
 import com.test.application.karpov.repositories.user.UserRepository;
 import lombok.Getter;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 

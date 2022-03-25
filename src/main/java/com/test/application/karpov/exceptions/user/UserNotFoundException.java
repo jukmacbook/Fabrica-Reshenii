@@ -1,4 +1,4 @@
-package com.test.application.karpov.exceptions;
+package com.test.application.karpov.exceptions.user;
 
 public class UserNotFoundException extends RuntimeException{
     private Long id;

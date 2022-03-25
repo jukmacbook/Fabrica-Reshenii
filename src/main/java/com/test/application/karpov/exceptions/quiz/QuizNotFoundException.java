@@ -1,4 +1,4 @@
-package com.test.application.karpov.exceptions;
+package com.test.application.karpov.exceptions.quiz;
 
 public class QuizNotFoundException extends RuntimeException {
 

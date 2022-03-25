@@ -1,9 +1,8 @@
 package com.test.application.karpov.services.quiz;
 
-import com.test.application.karpov.services.dto.Quiz;
+import com.test.application.karpov.dto.Quiz;
 
 import java.util.List;
-import java.util.Optional;
 
 
 public interface QuizService {

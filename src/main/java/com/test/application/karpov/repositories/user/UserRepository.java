@@ -1,6 +1,6 @@
 package com.test.application.karpov.repositories.user;
 
-import com.test.application.karpov.services.dto.User;
+import com.test.application.karpov.dto.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
