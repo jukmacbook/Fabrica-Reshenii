@@ -19,5 +19,3 @@ INSERT INTO `quiz`.`questions` (`questionid`, `question_text`, `question_type`, 
 INSERT INTO `quiz`.`questions` (`questionid`, `question_text`, `question_type`, `quizID`) VALUES ('6', 'How... ?', 'INPUT', '3');
 INSERT INTO `quiz`.`questions` (`questionid`, `question_text`, `question_type`, `quizID`) VALUES ('7', 'Please select...', 'SELECT', '4');
 INSERT INTO `quiz`.`questions` (`questionid`, `question_text`, `question_type`, `quizID`) VALUES ('8', 'Please select...', 'CHECK_BOX', '4');
-
-
